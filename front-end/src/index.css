@@ -1,0 +1,47 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'PT Serif', serif;
+}
+
+.btn{
+  width: 5em;
+  height: 2.4em;
+}
+
+.brisi {
+  background-color: #d33;
+  text-align: center;
+  cursor: pointer;
+}
+
+.editaj {
+  padding: 0.6em;
+  background-color: #1e90ff;
+  text-align: center;
+  cursor: pointer;
+}
+
+.confirmaj {
+  padding: 0!important;
+  background-color: #32cd32;
+  text-align: center;
+  cursor: pointer;
+}
+
+.odustani {
+  width: 100%;
+  padding: 0.5em;
+  background-color: #d33;
+  text-align: center;
+}
+
+.prihvati {
+  padding: 0.5em;
+  width: 100%;
+  text-align: center;
+}
+
+.prihvati p, .odustani p {
+  margin: 0;
+}
