@@ -20,6 +20,11 @@ class App extends Component {
     this.switchFunc = this.switchFunc.bind(this)
     this.deleteRow = this.deleteRow.bind(this)
     this.editRow = this.editRow.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    
   }
 
   render() {
@@ -30,7 +35,7 @@ class App extends Component {
         <div className="m-3">
           {
             this.state.page === 0 ? (
-              <Unos />
+              <Unos handleSubmit={this.handleSubmit}/>
             ) : (
               <Popis data={ this.state.data } deleteRow={ this.deleteRow } editRow={ this.editRow }/>
             )
@@ -40,7 +45,7 @@ class App extends Component {
     )
   }
 
-  editRow(newRow) {
+  editRow(newRow) { // uređivanje reda
     var data = this.state.data
 
     data = data.map((oldRow, index) => {
@@ -60,7 +65,7 @@ class App extends Component {
     this.setState({ page: newPage })
   }
 
-  deleteRow(id) {
+  deleteRow(id) { // brisanje reda
     var data = [ ...this.state.data ]
     var newData = []
     for(var i = 0; i < data.length; i++) {
@@ -69,6 +74,13 @@ class App extends Component {
     }
     
     this.setState({ data: newData })
+  }
+
+  handleSubmit(naziv, kategorija, podkategorija) { // stvaranje novog reda
+    console.log(naziv)
+    this.setState({
+      data: [ ...this.state.data, { id: this.state.data.length + 1, naziv, kategorija, podkategorija}]
+    })
   }
 }
 

@@ -5,13 +5,21 @@ function Unos(props) {
   const [kategorija, setKategorija] = useState('')
   const [podkategorija, setPodkategorija] = useState('')
 
+  const handle = (e) => {
+    e.preventDefault()
+    setNaziv('')
+    setKategorija('')
+    setPodkategorija('')
+    props.handleSubmit(naziv, kategorija, podkategorija)
+  }
+
   return (
     <div>
       <h1>Unos aktivnosti</h1>
 
       <hr />
 
-      <form onSubmit={props.handleSubmit}>
+      <form onSubmit={handle}>
         <div className="input-group mb-3">
           <div className="input-group-prepend">
             <span className="input-group-text" id="basic-addon1">Naziv</span>
