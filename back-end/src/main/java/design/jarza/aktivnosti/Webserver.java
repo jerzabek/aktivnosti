@@ -2,6 +2,7 @@ package design.jarza.aktivnosti;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,14 @@ public class Webserver {
     notFound((req, res) -> {
       res.type("application/json");
       return "{\"message\":\"Page Not Found\"}";
+    });
+
+    options("/*", (req, res) -> "OK");
+
+    after((req, res) -> {
+      res.header("Access-Control-Allow-Origin", "*");
+      res.header("Access-Control-Allow-Methods", "*");
+      res.header("Access-Control-Allow-Headers", "*");
     });
   }
 
@@ -102,9 +111,20 @@ public class Webserver {
         return "{\"message\":\"Bad ID in URL\"}";
       }
 
-      String naziv = req.headers("naziv"),
-              kate = req.headers("kategorija"),
-              podkate = req.headers("podkategorija");
+      if(req.body().isEmpty()) {
+        res.status(400);
+        return "{\"message\":\"No body\"}";
+      }
+
+      String reqbody = req.body();
+      Main.logger.info(reqbody);
+
+      JSONParser parser = new JSONParser();
+      JSONObject body = (JSONObject) parser.parse(reqbody);
+
+      String naziv = (String) body.get("naziv"),
+              kate =  (String) body.get("kategorija"),
+              podkate =  (String) body.get("podkategorija");
 
       if(naziv == null || kate == null || podkate == null ||
               naziv.length() > 10 || kate.length() > 20 || podkate.length() > 30 ||
@@ -128,9 +148,11 @@ public class Webserver {
     post("/aktivnosti", (req, res) -> {
       res.type("application/json");
 
-      String naziv = req.headers("naziv"),
-              kate = req.headers("kategorija"),
-              podkate = req.headers("podkategorija");
+      JSONObject body = (JSONObject) new JSONParser().parse(req.body());
+
+      String naziv = (String) body.get("naziv"),
+              kate =  (String) body.get("kategorija"),
+              podkate =  (String) body.get("podkategorija");
 
       if(naziv == null || kate == null || podkate == null ||
               naziv.length() > 10 || kate.length() > 20 || podkate.length() > 30 ||

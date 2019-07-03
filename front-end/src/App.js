@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import Navigacija from './Navigacija'
 import Unos from './Unos'
 import Popis from './Popis'
+import Swal from 'sweetalert2'
+import { getAktivnosti, deleteAktivnost, editAktivnost, stvoriAktivnost } from './API'
 
 class App extends Component {
 
@@ -10,11 +12,7 @@ class App extends Component {
 
     this.state = {
       page: 0,
-      data: [
-        { id: 1, naziv: 'Tenis', kategorija: 'Slobodno vrijeme', podkategorija: 'Sport' },
-        { id: 2, naziv: 'Gaming', kategorija: 'Slobodno vrijeme', podkategorija: 'Zabava' },
-        { id: 3, naziv: 'Kuhanje', kategorija: 'Obveze', podkategorija: 'Kućne obveze' }
-      ]
+      data: []
     }
 
     this.switchFunc = this.switchFunc.bind(this)
@@ -23,8 +21,14 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount() {
-    
+  async componentDidMount() {
+    try {
+      var data = await getAktivnosti()
+
+      this.setState({ data })
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
@@ -45,7 +49,13 @@ class App extends Component {
     )
   }
 
-  editRow(newRow) { // uređivanje reda
+  async editRow(newRow) { // uređivanje reda
+    try {
+      var response = await editAktivnost(newRow)
+    } catch (e) {
+      console.log(e)
+    }
+
     var data = this.state.data
 
     data = data.map((oldRow, index) => {
@@ -59,6 +69,15 @@ class App extends Component {
     this.setState({
       data: data
     })
+    
+    const toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    })
+
+    toast.fire(response)
   }
 
   switchFunc(newPage) {

@@ -22,7 +22,7 @@ public class Database {
 
   private static final String GET_AKTIVNOSTI = "SELECT * FROM aktivnosti;";
   private static final String DELETE_AKTIVNOSTI = "DELETE FROM aktivnosti WHERE id = ?;";
-  private static final String UPDATE_AKTIVNOST = "UPDATE aktivnosti WHERE id = ? SET naziv = \"?\" AND kategorija = \"?\" AND podkategorija = \"?\";";
+  private static final String UPDATE_AKTIVNOST = "UPDATE aktivnosti SET naziv = ?, kategorija = ?, podkategorija = ? WHERE id = ?;";
   private static final String CREATE_AKTIVNOST = "INSERT INTO aktivnosti (naziv, kategorija, podkategorija) VALUES (?, ?, ?);";
 
   public Database() {
@@ -67,7 +67,7 @@ public class Database {
       }
 
     } catch (SQLException e) {
-      logger.error(e.getMessage());
+      logger.error("Error in getAktivnosti", e);
     }
 
     return akt;
@@ -85,7 +85,7 @@ public class Database {
         uspjeh = true;
 
     } catch (SQLException e) {
-      logger.error(e.getMessage());
+      logger.error("Error in deleteAktivnost", e);
     }
 
     return uspjeh;
@@ -97,16 +97,16 @@ public class Database {
     try (Connection c = getConnection();
          PreparedStatement s = c.prepareStatement(UPDATE_AKTIVNOST)) {
 
-      s.setInt(1, akt.getId());
-      s.setString(2, akt.getNaziv());
-      s.setString(3, akt.getKategorija());
-      s.setString(4, akt.getPodkategorija());
+      s.setString(1, akt.getNaziv());
+      s.setString(2, akt.getKategorija());
+      s.setString(3, akt.getPodkategorija());
+      s.setInt(4, akt.getId());
 
       if(s.executeUpdate() > 0)
         uspjeh = true;
 
     } catch (SQLException e) {
-      logger.error(e.getMessage());
+      logger.error("Error in updateAktivnost", e);
     }
 
     return uspjeh;
@@ -122,7 +122,7 @@ public class Database {
 
       s.executeUpdate();
     } catch (SQLException e) {
-      logger.error(e.getMessage());
+      logger.error("Error in createAktivnost", e);
     }
   }
 }
