@@ -87,7 +87,9 @@ class App extends Component {
       this.setState({ connection: false })
       return
     }
-
+    
+    this.setState({ connection: true })
+    
     if (response.type === 'success') {
       var data = this.state.data
 
