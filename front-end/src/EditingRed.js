@@ -28,9 +28,15 @@ function EditingRed(props) {
         </div>
       </td>
       <th scope='row'>{id}</th>
-      <td className='p-0'><textarea maxLength={10} className='w-100 h-100' value={naziv} onChange={(e) => setNaziv(e.target.value)} name='naziv' placeholder='Naziv'></textarea></td>
-      <td className='p-0'><textarea maxLength={20} className='w-100 h-100' value={kategorija} onChange={(e) => setKategorija(e.target.value)} name='kategorija' placeholder='Kategorija'></textarea></td>
-      <td className='p-0'><textarea maxLength={30} className='w-100 h-100' value={podkategorija} onChange={(e) => setPodkategorija(e.target.value)} name='podkat' placeholder='Podkategorija'></textarea></td>
+      <td className='p-0'>
+        <textarea maxLength={10} className='w-100 h-100' value={naziv} onChange={(e) => setNaziv(e.target.value)} name='naziv' placeholder='Naziv'></textarea>
+      </td>
+      <td className='p-0'>
+        <textarea maxLength={20} className='w-100 h-100' value={kategorija} onChange={(e) => setKategorija(e.target.value)} name='kategorija' placeholder='Kategorija'></textarea>
+      </td>
+      <td className='p-0'>
+        <textarea maxLength={30} className='w-100 h-100' value={podkategorija} onChange={(e) => setPodkategorija(e.target.value)} name='podkat' placeholder='Podkategorija'></textarea>
+      </td>
     </tr >
   )
 }

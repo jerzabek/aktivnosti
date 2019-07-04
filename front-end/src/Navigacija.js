@@ -1,7 +1,21 @@
 import React from 'react'
+import Swal from 'sweetalert2'
 
 function Navigacija(props) {
   const goToPage = (newPage) => {
+    if(props.editing !== -1) {
+      const toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      })
+
+      toast.fire({ type: 'warning', title: 'Završite sa uređivanjem prije izlaska!' })
+
+      return
+    }
+
     if (props.page === newPage)
       return
 

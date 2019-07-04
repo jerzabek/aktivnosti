@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Red from './Red'
 import EditingRed from './EditingRed'
 
 function Popis(props) {
-  const [editing, setEditing] = useState(-1)
   const generator = () => {
     const data = props.data
     var rows = []
 
     for (var i = 0; i < data.length; i++) {
-      if (editing === data[i].id) {
+      if (props.editing === data[i].id) {
         rows.push(
           <EditingRed
             key={data[i].id}
@@ -18,10 +17,10 @@ function Popis(props) {
             kategorija={data[i].kategorija}
             podkategorija={data[i].podkategorija}
             deleteRow={props.deleteRow}
-            cancelEditing={setEditing}
+            cancelEditing={props.setEditing}
             editRow={ (val) => {
               props.editRow(val)
-              setEditing(-1)
+              props.setEditing(-1)
             }} />
         )
       } else {
@@ -32,7 +31,7 @@ function Popis(props) {
             naziv={data[i].naziv}
             kategorija={data[i].kategorija}
             podkategorija={data[i].podkategorija}
-            editRow={setEditing}
+            editRow={props.setEditing}
             deleteRow={props.deleteRow} />
         )
       }

@@ -61,9 +61,9 @@ public class Database {
 
       while (rs.next()) {
         akt.add(new Aktivnost(rs.getInt(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4)));
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4)));
       }
 
     } catch (SQLException e) {
@@ -81,7 +81,7 @@ public class Database {
 
       s.setInt(1, id);
 
-      if(s.executeUpdate() > 0)
+      if (s.executeUpdate() > 0)
         uspjeh = true;
 
     } catch (SQLException e) {
@@ -102,7 +102,7 @@ public class Database {
       s.setString(3, akt.getPodkategorija());
       s.setInt(4, akt.getId());
 
-      if(s.executeUpdate() > 0)
+      if (s.executeUpdate() > 0)
         uspjeh = true;
 
     } catch (SQLException e) {

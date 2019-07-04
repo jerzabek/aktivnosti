@@ -14,13 +14,19 @@ class App extends Component {
     this.state = {
       page: 0,
       data: [],
-      connection: true
+      connection: true,
+      editing: -1
     }
 
     this.switchFunc = this.switchFunc.bind(this)
     this.deleteRow = this.deleteRow.bind(this)
     this.editRow = this.editRow.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.setEditing = this.setEditing.bind(this)
+  }
+
+  setEditing(editing) {
+    this.setState({ editing })
   }
 
   async componentDidMount() {
@@ -49,14 +55,14 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navigacija page={this.state.page} switch={this.switchFunc} connection={this.state.connection} />
+        <Navigacija page={this.state.page} switch={this.switchFunc} connection={this.state.connection} editing={this.state.editing} />
         <hr />
         <div className="m-3">
           {
             this.state.page === 0 ? (
               <Unos handleSubmit={this.handleSubmit} connection={this.state.connection} />
             ) : (
-                <Popis data={this.state.data} deleteRow={this.deleteRow} editRow={this.editRow} />
+                <Popis data={this.state.data} deleteRow={this.deleteRow} editRow={this.editRow} editing={this.state.editing} setEditing={this.setEditing} />
               )
           }
         </div>
@@ -187,7 +193,7 @@ class App extends Component {
         title: 'Nema veze sa serverom :(',
         text: 'Spremite upisane podatke te pokušajte ponovno kasnije.'
       })
-      
+
       this.setState({ connection: false })
     }
   }

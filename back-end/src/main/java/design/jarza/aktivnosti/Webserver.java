@@ -3,8 +3,6 @@ package design.jarza.aktivnosti;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -94,7 +92,7 @@ public class Webserver {
 
       boolean uspjeh = Main.database.deleteAktivnost(id);
 
-      if(!uspjeh)
+      if (!uspjeh)
         res.status(404);
 
       return "{}";
@@ -113,7 +111,7 @@ public class Webserver {
         return "{\"message\":\"Bad ID in URL\"}";
       }
 
-      if(req.body().isEmpty()) {
+      if (req.body().isEmpty()) {
         res.status(400);
         return "{\"message\":\"No body\"}";
       }
@@ -124,10 +122,10 @@ public class Webserver {
       JSONObject body = (JSONObject) parser.parse(reqbody);
 
       String naziv = (String) body.get("naziv"),
-              kate =  (String) body.get("kategorija"),
-              podkate =  (String) body.get("podkategorija");
+              kate = (String) body.get("kategorija"),
+              podkate = (String) body.get("podkategorija");
 
-      if(naziv == null || kate == null || podkate == null ||
+      if (naziv == null || kate == null || podkate == null ||
               naziv.length() > 10 || kate.length() > 20 || podkate.length() > 30 ||
               naziv.length() == 0 || kate.length() == 0 || podkate.length() == 0) {
         res.status(422);
@@ -138,7 +136,7 @@ public class Webserver {
 
       boolean uspjeh = Main.database.updateAktivnost(ak);
 
-      if(!uspjeh)
+      if (!uspjeh)
         res.status(404);
 
       return "{}";
@@ -152,10 +150,10 @@ public class Webserver {
       JSONObject body = (JSONObject) new JSONParser().parse(req.body());
 
       String naziv = (String) body.get("naziv"),
-              kate =  (String) body.get("kategorija"),
-              podkate =  (String) body.get("podkategorija");
+              kate = (String) body.get("kategorija"),
+              podkate = (String) body.get("podkategorija");
 
-      if(naziv == null || kate == null || podkate == null ||
+      if (naziv == null || kate == null || podkate == null ||
               naziv.length() > 10 || kate.length() > 20 || podkate.length() > 30 ||
               naziv.length() == 0 || kate.length() == 0 || podkate.length() == 0) {
         res.status(422);
