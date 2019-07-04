@@ -3,6 +3,8 @@ package design.jarza.aktivnosti;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -117,7 +119,6 @@ public class Webserver {
       }
 
       String reqbody = req.body();
-      Main.logger.info(reqbody);
 
       JSONParser parser = new JSONParser();
       JSONObject body = (JSONObject) parser.parse(reqbody);

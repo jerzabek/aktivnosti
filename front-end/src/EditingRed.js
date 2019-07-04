@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 import xIcon from './imgs/cancel.svg'
 
 function EditingRed(props) {
@@ -16,7 +14,7 @@ function EditingRed(props) {
 
   return (
     <tr key={id}>
-      <td onClick={() => deleteModal(id, deleteRow)} className='brisi'>
+      <td onClick={() => deleteRow(id)} className='brisi'>
         <img src={xIcon} width='25em' height='25em' alt='Ikona brisanja'></img>
       </td>
       <td className='confirmaj'>
@@ -30,41 +28,11 @@ function EditingRed(props) {
         </div>
       </td>
       <th scope='row'>{id}</th>
-      <td className='p-0'><textarea className='w-100 h-100' value={naziv} onChange={(e) => setNaziv(e.target.value)} name='naziv' placeholder='Naziv'></textarea></td>
-      <td className='p-0'><textarea className='w-100 h-100' value={kategorija} onChange={(e) => setKategorija(e.target.value)} name='kategorija' placeholder='Kategorija'></textarea></td>
-      <td className='p-0'><textarea className='w-100 h-100' value={podkategorija} onChange={(e) => setPodkategorija(e.target.value)} name='podkat' placeholder='Podkategorija'></textarea></td>
+      <td className='p-0'><textarea maxLength={10} className='w-100 h-100' value={naziv} onChange={(e) => setNaziv(e.target.value)} name='naziv' placeholder='Naziv'></textarea></td>
+      <td className='p-0'><textarea maxLength={20} className='w-100 h-100' value={kategorija} onChange={(e) => setKategorija(e.target.value)} name='kategorija' placeholder='Kategorija'></textarea></td>
+      <td className='p-0'><textarea maxLength={30} className='w-100 h-100' value={podkategorija} onChange={(e) => setPodkategorija(e.target.value)} name='podkat' placeholder='Podkategorija'></textarea></td>
     </tr >
   )
-}
-
-function deleteModal(id, deleteRow) {
-  const MySwal = withReactContent(Swal)
-
-  MySwal.queue([{
-    title: 'Jeste li sigurni?',
-    text: 'Ova akcija se ne može poništiti - ' + id,
-    type: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    cancelButtonText: 'Odustani',
-    confirmButtonText: 'Briši',
-    showLoaderOnConfirm: true,
-    preConfirm: () => {
-      return fetch('https://api.ipify.org?format=json')
-        .then(response => response.json())
-        .then(data => {
-          deleteRow(id)
-          return MySwal.insertQueueStep({ title: 'IP', text: data.ip })
-        })
-        .catch(() => {
-          MySwal.insertQueueStep({
-            type: 'error',
-            title: 'Unable to get your public IP'
-          })
-        })
-    }
-  }])
 }
 
 export default EditingRed

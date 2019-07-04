@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
 function Unos(props) {
   const [naziv, setNaziv] = useState('')
@@ -7,10 +9,25 @@ function Unos(props) {
 
   const handle = (e) => {
     e.preventDefault()
-    setNaziv('')
-    setKategorija('')
-    setPodkategorija('')
-    props.handleSubmit(naziv, kategorija, podkategorija)
+
+    if(!props.connection){
+      const swal = withReactContent(Swal)
+
+      swal.fire({
+        type: 'error',
+        title: 'Nema veze sa serverom :(',
+        text: 'Spremite upisane podatke te pokušajte ponovno kasnije.'
+      })
+
+      return
+    }
+    const clearInputs = () => {
+      setNaziv('')
+      setKategorija('')
+      setPodkategorija('')
+    }
+
+    props.handleSubmit(naziv, kategorija, podkategorija, clearInputs)
   }
 
   return (

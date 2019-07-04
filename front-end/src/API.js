@@ -9,9 +9,9 @@ function getAktivnosti() {
 
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) { 
+        if (xhr.status === 200) {
           resolve(JSON.parse(xhr.responseText))
-        } else { 
+        } else {
           reject(xhr.responseText)
         }
       }
@@ -28,11 +28,11 @@ function deleteAktivnost(id) {
 
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) { 
-          resolve({ type: 'success', title: 'Uspjeh!'})
-        } else if (xhr.status === 400){ 
+        if (xhr.status === 200) {
+          resolve({ type: 'success', title: 'Uspjeh!' })
+        } else if (xhr.status === 400) {
           resolve({ type: 'error', title: `${id} nije valjan broj.` })
-        } else if (xhr.status === 404){ 
+        } else if (xhr.status === 404) {
           resolve({ type: 'warning', title: `Ta aktivnost ne postoji.` })
         } else {
           reject(xhr.responseText)
@@ -54,13 +54,13 @@ function editAktivnost(aktivnost) {
 
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) { 
-          resolve({ type: 'success', title: 'Uspjeh!'})
-        } else if (xhr.status === 400){ 
+        if (xhr.status === 200) {
+          resolve({ type: 'success', title: 'Uspjeh!' })
+        } else if (xhr.status === 400) {
           resolve({ type: 'error', title: `${aktivnost.id} nije valjan broj.` })
-        } else if (xhr.status === 404){ 
+        } else if (xhr.status === 404) {
           resolve({ type: 'warning', title: `Ta aktivnost ne postoji.` })
-        } else if (xhr.status === 422){ 
+        } else if (xhr.status === 422) {
           resolve({ type: 'error', title: `Podaci su neispravni.` })
         } else {
           reject(xhr.responseText)
@@ -70,18 +70,18 @@ function editAktivnost(aktivnost) {
   })
 }
 
-function stvoriAktivnost() {
+function stvoriAktivnost(naziv, kategorija, podkategorija) {
   return new Promise(function (resolve, reject) {
     const xhr = new XMLHttpRequest()
     const url = `${baseUrl}/aktivnosti`
     xhr.open('POST', url, true)
-    xhr.send()
+    xhr.send(JSON.stringify({ naziv, kategorija, podkategorija }))
 
     xhr.onreadystatechange = (e) => {
       if (xhr.readyState === 4) {
-        if (xhr.status === 200) { 
-          resolve({ type: 'success', title: 'Uspjeh!'})
-        } else if (xhr.status === 422){ 
+        if (xhr.status === 200) {
+          resolve({ type: 'success', title: 'Uspjeh!' })
+        } else if (xhr.status === 422) {
           resolve({ type: 'error', title: `Podaci su neispravni.` })
         } else {
           reject(xhr.responseText)
