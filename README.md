@@ -24,7 +24,7 @@ Briše određenu aktivnost iz database-a.
 Uređuje aktivnost. Koristi vrijednosti iz header-a request-a:
 `naziv`, `kategorija`, `podkategorija`
 
-**Vraća status code 400 ako id argument u URL-u nije broj**
+**Vraća status code 400 ako id argument u URL-u nije broj ili ako nema parametara**
 
 **Vraća status code 404 ako ako tražena aktivnost ne postoji**
 
