@@ -75,6 +75,8 @@ function stvoriAktivnost(naziv, kategorija, podkategorija) {
     const xhr = new XMLHttpRequest()
     const url = `${baseUrl}/aktivnosti`
     xhr.open('POST', url, true)
+    
+    xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.send(JSON.stringify({ naziv, kategorija, podkategorija }))
 
     xhr.onreadystatechange = (e) => {
