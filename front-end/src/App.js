@@ -87,9 +87,9 @@ class App extends Component {
       this.setState({ connection: false })
       return
     }
-    
+
     this.setState({ connection: true })
-    
+
     if (response.type === 'success') {
       var data = this.state.data
 
@@ -139,7 +139,7 @@ class App extends Component {
             if (res.type === 'success')
               this.deleteLocalRow(id)
 
-            
+
             return MySwal.insertQueueStep(res)
           })
           .catch((e) => {
@@ -179,9 +179,26 @@ class App extends Component {
 
       toast.fire(response)
       if (response.type === 'success') {
-        this.setState({
-          data: [...this.state.data, { id: this.state.data.length + 1, naziv, kategorija, podkategorija }]
-        })
+        try {
+          var data = await getAktivnosti()
+
+          this.setState({ data })
+        } catch (e) {
+          console.log(e)
+
+          const toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+          })
+
+          toast.fire({ type: 'error', title: 'Server nedostupan!' })
+
+          this.setState({
+            connection: false
+          })
+        }
       }
 
       clearInputs()
