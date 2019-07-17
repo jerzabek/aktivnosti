@@ -5,6 +5,7 @@ import Popis from './Popis'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { getAktivnosti, deleteAktivnost, editAktivnost, stvoriAktivnost } from './API'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 
 class App extends Component {
 
@@ -12,24 +13,42 @@ class App extends Component {
     super(props)
 
     this.state = {
-      page: 0,
       data: [],
       connection: true,
       editing: -1
     }
 
-    this.switchFunc = this.switchFunc.bind(this)
     this.deleteRow = this.deleteRow.bind(this)
     this.editRow = this.editRow.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.setEditing = this.setEditing.bind(this)
+    this.onBeforeUnload = this.onBeforeUnload.bind(this)
   }
 
   setEditing(editing) {
     this.setState({ editing })
   }
 
+  onBeforeUnload(e) {
+    var dirty = false
+    var len = e.srcElement.forms.length
+
+    if (len > 0) {
+      var form = [...e.srcElement.forms[0]]
+      form.pop()
+      dirty = form.filter((val, index) => val.value.trim() !== '').length > 0;
+    }
+
+    if (this.state.editing !== -1 || dirty) {
+      const msg = 'Molimo Vas spremite promjene prije izlaska sa stranice'; // radi u starim verzijama browsera
+
+      (e || window.event).returnValue = msg
+      return msg
+    }
+  }
+
   async componentDidMount() {
+    window.addEventListener('beforeunload', this.onBeforeUnload)
     try {
       var data = await getAktivnosti()
 
@@ -52,21 +71,29 @@ class App extends Component {
     }
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this.onBeforeUnload)
+  }
+
   render() {
     return (
-      <div>
-        <Navigacija page={this.state.page} switch={this.switchFunc} connection={this.state.connection} editing={this.state.editing} />
-        <hr />
-        <div className="m-3">
-          {
-            this.state.page === 0 ? (
-              <Unos handleSubmit={this.handleSubmit} connection={this.state.connection} />
-            ) : (
-                <Popis data={this.state.data} deleteRow={this.deleteRow} editRow={this.editRow} editing={this.state.editing} setEditing={this.setEditing} />
-              )
-          }
+      <Router>
+        <div>
+          <Navigacija connection={this.state.connection} editing={this.state.editing} />
+          <hr />
+          <div className="m-3">
+            <Switch>
+              <Route path={["/", "/unos"]} exact
+                render={props =>
+                  <Unos {...props} handleSubmit={this.handleSubmit} connection={this.state.connection} />} />
+              <Route path="/popis" exact
+                render={props =>
+                  <Popis {...props} data={this.state.data} deleteRow={this.deleteRow} editRow={this.editRow} editing={this.state.editing} setEditing={this.setEditing} />} />
+              <Redirect to="/" />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     )
   }
 
@@ -114,10 +141,6 @@ class App extends Component {
     })
 
     toast.fire(response)
-  }
-
-  switchFunc(newPage) {
-    this.setState({ page: newPage })
   }
 
   async deleteRow(id) { // brisanje reda
@@ -179,6 +202,7 @@ class App extends Component {
 
       toast.fire(response)
       if (response.type === 'success') {
+        clearInputs()
         try {
           var data = await getAktivnosti()
 
@@ -200,8 +224,6 @@ class App extends Component {
           })
         }
       }
-
-      clearInputs()
     } catch (e) {
       console.log(e)
 
